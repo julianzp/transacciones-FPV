@@ -5,6 +5,7 @@ from boto3.dynamodb.conditions import Key
 
 table = dynamodb.Table("Fondos")
 
+
 def get_fondos():
 
     try:
@@ -31,21 +32,16 @@ def get_fondo(id: str):
 
         return JSONResponse(content=e.response["error"], status_code=500)
 
+
 def get_fondos_by_ids(ids: list[str]):
 
     try:
-        
-        if(ids == []):
+
+        if ids == []:
             return []
-        
+
         response = dynamodb_client.batch_get_item(
-            RequestItems={
-                'Fondos': {
-                    'Keys': [
-                        {'FondoId': {'S': id}} for id in ids
-                    ]
-                }
-            }
+            RequestItems={"Fondos": {"Keys": [{"FondoId": {"S": id}} for id in ids]}}
         )
         return response["Responses"]["Fondos"]
 
