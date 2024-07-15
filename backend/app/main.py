@@ -1,12 +1,28 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.routes.transaccion import router_transaction
 from app.routes.suscripcion import router_subscription
 from app.routes.cliente import router_client
 from app.routes.fondo import router_fund
 from app.database.db import create_tables, seed_fondos
+from pathlib import Path
 
 app = FastAPI()
+
+# Configurar CORS
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(router_transaction, prefix="/transaction")
 app.include_router(router_subscription, prefix="/subscription")

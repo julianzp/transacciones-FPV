@@ -6,6 +6,7 @@ from boto3.dynamodb.conditions import Key
 table = dynamodb.Table("Suscripcion")
 
 
+
 def get_subscriptions():
 
     try:
@@ -68,6 +69,21 @@ def delete_subscription(deleteSubscripcion: dict):
             Key={
                 "SuscripcionId": deleteSubscripcion["SuscripcionId"],
                 "fecha": deleteSubscripcion["fecha"],
+            }
+        )
+        return response
+    except ClientError as e:
+        return JSONResponse(content=e.response["Error"], status_code=500)
+
+def delete_subscription_by_fondoId(deleteSubscripcion: dict):
+    try:
+
+        cancelar_fondo =get_subscription_by_fondo(deleteSubscripcion["fondoId"])
+        
+        response = table.delete_item(
+            Key={
+                "SuscripcionId": cancelar_fondo[0]["SuscripcionId"],
+                "fecha": cancelar_fondo[0]["fecha"]
             }
         )
         return response

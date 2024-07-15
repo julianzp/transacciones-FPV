@@ -1,9 +1,16 @@
 from decimal import Decimal
-from boto3 import resource
+from boto3 import resource, client
 from os import getenv
 
 # Establecer la conexión con DynamoDB
 dynamodb = resource(
+    "dynamodb",
+    aws_access_key_id=getenv("DB_ACCESS_KEY_ID"),
+    aws_secret_access_key=getenv("DB_SECRET_ACCESS_KEY"),
+    region_name=getenv("DB_REGION_NAME"),
+)
+
+dynamodb_client = client(
     "dynamodb",
     aws_access_key_id=getenv("DB_ACCESS_KEY_ID"),
     aws_secret_access_key=getenv("DB_SECRET_ACCESS_KEY"),

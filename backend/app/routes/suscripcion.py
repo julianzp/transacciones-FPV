@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.database.suscripcion import get_subscriptions, get_subscription
 from app.models.suscripcion import Suscripcion, DeleteSuscripcion
-from app.services.subscription_service import subscribe_fund, unsubscribe_fund
+from app.services.subscription_service import subscribe_fund, unsubscribe_fund, get_subscripted_funds
 
 router_subscription = APIRouter()
 
@@ -17,6 +17,11 @@ def get_subscription_by_id(id: str):
 
     return get_subscription(id)
 
+@router_subscription.get("/all-subscriptions")
+def get_all_subscripted_funds():
+
+    return get_subscripted_funds()
+
 
 @router_subscription.post("/create", response_model=Suscripcion)
 def create_new_subscription(suscripcion: Suscripcion):
@@ -28,3 +33,4 @@ def create_new_subscription(suscripcion: Suscripcion):
 def delete_single_subscription(deleteSuscripcion: DeleteSuscripcion):
 
     return unsubscribe_fund(deleteSuscripcion.dict())
+
