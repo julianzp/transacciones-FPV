@@ -1,9 +1,9 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CustomerInfo from "./components/customerBalance/customerBalance";
-import SuscribirFondo from "./components/subscribeFund/subscribeFund";
-import DesuscribirFondo from "./components/unsubscribeFund/unsubscribeFund";
-import ListarTabla from "./components/transactionTable/transactionTable";
+import CustomerInfo from "./components//CustomerBalance";
+import SuscribirFondo from "./components//SubscribeFund";
+import DesuscribirFondo from "./components//UnsubscribeFund";
+import ListarTabla from "./components//TransactionTable";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {

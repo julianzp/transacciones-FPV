@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const SuscribirFondo = () => {
+const DesuscribirFondo = () => {
   const [form, setForm] = useState({
     clienteId: "1",
     fondoId: "",
-    montoInvertido: "",
     notificacion: "sms",
   });
 
@@ -17,9 +16,11 @@ const SuscribirFondo = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    const fetchFondos = async () => {
+    const fetchFondosSuscritos = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/fund/all");
+        const response = await axios.get(
+          "http://3.85.75.66:8000/subscription/all-subscriptions",
+        );
         setFondos(response.data);
       } catch (err) {
         setError(err.message);
@@ -27,7 +28,7 @@ const SuscribirFondo = () => {
       }
     };
 
-    fetchFondos();
+    fetchFondosSuscritos();
   }, []);
 
   const handleChange = (e) => {
@@ -40,25 +41,25 @@ const SuscribirFondo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar que todos los campos estén llenos
-    if (!form.fondoId || !form.montoInvertido || !form.notificacion) {
+    if (!form.fondoId || !form.notificacion) {
       setError("Todos los campos son requeridos");
       setShowErrorModal(true);
       return;
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/subscription/create",
-        form,
+      const response = await axios.delete(
+        "http://3.85.75.66:8000/subscription/delete",
+        {
+          data: form,
+        },
       );
       console.log("Response:", response.data);
       setSuccessMessage(
-        "¡La suscripción se realizó con éxito! Se le envió la notificación al medio indicado",
+        "¡Se canceló tu suscripción a este fondo! Se le envió la notificación al medio indicado",
       );
       setShowSuccessModal(true);
     } catch (err) {
-      console.log(err);
       setError(err.response.data);
       setShowErrorModal(true);
     }
@@ -71,7 +72,6 @@ const SuscribirFondo = () => {
     setForm({
       clienteId: "1",
       fondoId: "",
-      montoInvertido: "",
       notificacion: "sms",
     });
     window.location.reload();
@@ -80,8 +80,9 @@ const SuscribirFondo = () => {
   return (
     <div className="container">
       <br></br>
-      <h2>Suscribirse a un Fondo</h2>
+      <h2>Desuscribirse de un Fondo</h2>
 
+      {/* Modal de Error */}
       <div
         className={`modal fade ${showErrorModal ? "show" : ""}`}
         style={{ display: showErrorModal ? "block" : "none" }}
@@ -143,33 +144,24 @@ const SuscribirFondo = () => {
         </div>
       </div>
 
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Fondos</label>
+          <label>Fondos Suscritos</label>
           <select
             className="form-control"
             name="fondoId"
             value={form.fondoId}
             onChange={handleChange}
+            disabled={fondos.length === 0}
           >
             <option value="">Selecciona un fondo</option>
             {fondos.map((fondo) => (
-              <option key={fondo.FondoId} value={fondo.FondoId}>
-                {fondo.Nombre}
+              <option key={fondo.FondoId.S} value={fondo.FondoId.S}>
+                {fondo.Nombre.S}
               </option>
             ))}
           </select>
-        </div>
-        <br></br>
-        <div className="form-group">
-          <label>Monto Invertido</label>
-          <input
-            type="number"
-            className="form-control"
-            name="montoInvertido"
-            value={form.montoInvertido}
-            onChange={handleChange}
-          />
         </div>
         <br></br>
         <div className="form-group">
@@ -185,12 +177,17 @@ const SuscribirFondo = () => {
           </select>
         </div>
         <br></br>
-        <button type="submit" className="btn btn-primary">
-          Suscribirse
+        <button
+          type="submit"
+          className="btn btn-danger"
+          onClick={handleSubmit}
+          disabled={fondos.length === 0}
+        >
+          Desuscribirse
         </button>
       </form>
     </div>
   );
 };
 
-export default SuscribirFondo;
+export default DesuscribirFondo;
