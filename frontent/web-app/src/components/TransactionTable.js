@@ -38,7 +38,7 @@ const ListarTabla = () => {
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/transaction/all",
+          "http://3.85.75.66:8000/transaction/all",
         );
         setTransactions(response.data);
       } catch (err) {

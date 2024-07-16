@@ -19,7 +19,7 @@ const SuscribirFondo = () => {
   useEffect(() => {
     const fetchFondos = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/fund/all");
+        const response = await axios.get("http://3.85.75.66:8000/fund/all");
         setFondos(response.data);
       } catch (err) {
         setError(err.message);
@@ -49,7 +49,7 @@ const SuscribirFondo = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/subscription/create",
+        "http://3.85.75.66:8000/subscription/create",
         form,
       );
       console.log("Response:", response.data);

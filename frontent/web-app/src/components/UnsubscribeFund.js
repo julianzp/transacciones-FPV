@@ -19,7 +19,7 @@ const DesuscribirFondo = () => {
     const fetchFondosSuscritos = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/subscription/all-subscriptions",
+          "http://3.85.75.66:8000/subscription/all-subscriptions",
         );
         setFondos(response.data);
       } catch (err) {
@@ -49,7 +49,7 @@ const DesuscribirFondo = () => {
 
     try {
       const response = await axios.delete(
-        "http://127.0.0.1:8000/subscription/delete",
+        "http://3.85.75.66:8000/subscription/delete",
         {
           data: form,
         },

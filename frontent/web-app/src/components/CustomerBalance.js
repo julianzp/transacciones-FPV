@@ -7,14 +7,6 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
 
 const CustomerInfoCard = () => {
   const [customer, setCustomer] = React.useState({
@@ -33,7 +25,7 @@ const CustomerInfoCard = () => {
   React.useEffect(() => {
     const fetchCustomerInfo = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/client/get/1");
+        const response = await axios.get("http://3.85.75.66:8000/client/get/1");
         console.log(response.data[0]);
         setCustomer(response.data[0]);
       } catch (err) {
